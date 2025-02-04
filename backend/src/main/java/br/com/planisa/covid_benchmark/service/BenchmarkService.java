@@ -11,14 +11,14 @@ import java.util.Optional;
 @Service
 public class BenchmarkService {
 
-    private final BenchmarkRepository BenchmarkRepository;
+    private final BenchmarkRepository benchmarkRepository;
 
     public BenchmarkService(BenchmarkRepository benchmarkRepository) {
-        BenchmarkRepository = benchmarkRepository;
+        this.benchmarkRepository = benchmarkRepository;
     }
 
     public List<BenchmarkDTO> getBenchmarks() {
-        List<Benchmark> benchmarkList = BenchmarkRepository.findAll();
+        List<Benchmark> benchmarkList = benchmarkRepository.findAll();
         return benchmarkList
                 .stream()
                 .map(BenchmarkDTO::new)
@@ -26,8 +26,17 @@ public class BenchmarkService {
     }
 
     public BenchmarkDTO getBenchmarkById(Long id) {
-        Optional<Benchmark> benchmark = BenchmarkRepository.findById(id);
+        Optional<Benchmark> benchmark = benchmarkRepository.findById(id);
         return benchmark.map(BenchmarkDTO::new).orElse(null);
+    }
+
+    public BenchmarkDTO updateBenchmark(Long id, String name) throws Exception {
+        Benchmark benchmark = benchmarkRepository.findById(id)
+                .orElseThrow(() -> new Exception("Benchmark não encontrado"));
+
+        benchmark.setName(name);
+        benchmark = benchmarkRepository.save(benchmark);
+        return new BenchmarkDTO(benchmark);
     }
 
 }
