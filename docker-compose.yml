@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: covid-benchmark-db
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${DB_HOST}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    networks:
+      - covid-network
+
+networks:
+  covid-network:
+    driver: bridge
