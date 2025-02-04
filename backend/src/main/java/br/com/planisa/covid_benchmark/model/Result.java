@@ -1,10 +1,11 @@
-package br.com.planisa.covid_benchmark.mode;
+package br.com.planisa.covid_benchmark.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "result")
@@ -28,18 +29,19 @@ public class Result {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "benchmark_id", referencedColumnName = "id")
+    @JsonIgnore
     private Benchmark benchmark;
 
     @CreatedDate
-    private LocalDate createtAt;
+    private LocalDateTime createtAt;
 
     @LastModifiedDate
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     public Result() {
     }
 
-    public Result(Integer id, Integer casesCountry1, Integer casesCountry2, Integer deathsCountry1, Integer deathsCountry2, Benchmark benchmark, LocalDate createtAt, LocalDate updatedAt) {
+    public Result(Integer id, Integer casesCountry1, Integer casesCountry2, Integer deathsCountry1, Integer deathsCountry2, Benchmark benchmark, LocalDateTime createtAt, LocalDateTime updatedAt) {
         this.id = id;
         this.casesCountry1 = casesCountry1;
         this.casesCountry2 = casesCountry2;
@@ -98,33 +100,20 @@ public class Result {
         this.benchmark = benchmark;
     }
 
-    public LocalDate getCreatetAt() {
+    public LocalDateTime getCreatetAt() {
         return createtAt;
     }
 
-    public void setCreatetAt(LocalDate createtAt) {
+    public void setCreatetAt(LocalDateTime createtAt) {
         this.createtAt = createtAt;
     }
 
-    public LocalDate getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDate updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    @Override
-    public String toString() {
-        return "Result{" +
-                "id=" + id +
-                ", casesCountry1=" + casesCountry1 +
-                ", casesCountry2=" + casesCountry2 +
-                ", deathsCountry1=" + deathsCountry1 +
-                ", deathsCountry2=" + deathsCountry2 +
-                ", benchmark=" + benchmark +
-                ", createtAt=" + createtAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }

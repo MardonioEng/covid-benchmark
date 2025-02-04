@@ -1,10 +1,11 @@
-package br.com.planisa.covid_benchmark.mode;
+package br.com.planisa.covid_benchmark.model;
 
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "benchmark")
@@ -31,16 +32,19 @@ public class Benchmark {
 
     @CreatedDate
     @Column(name = "created_at")
-    private LocalDate createtAt;
+    private LocalDateTime createtAt;
 
     @LastModifiedDate
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
+
+    @OneToOne(mappedBy = "benchmark")
+    private Result result;
 
     public Benchmark() {
     }
 
-    public Benchmark(Integer id, String name, String country1, String country2, LocalDate startDate, LocalDate endDate, LocalDate createtAt, LocalDate updatedAt) {
+    public Benchmark(Integer id, String name, String country1, String country2, LocalDate startDate, LocalDate endDate, LocalDateTime createtAt, LocalDateTime updatedAt, Result result) {
         this.id = id;
         this.name = name;
         this.country1 = country1;
@@ -49,6 +53,7 @@ public class Benchmark {
         this.endDate = endDate;
         this.createtAt = createtAt;
         this.updatedAt = updatedAt;
+        this.result = result;
     }
 
     public Integer getId() {
@@ -99,33 +104,28 @@ public class Benchmark {
         this.endDate = endDate;
     }
 
-    public LocalDate getCreatetAt() {
+    public LocalDateTime getCreatetAt() {
         return createtAt;
     }
 
-    public void setCreatetAt(LocalDate createtAt) {
+    public void setCreatetAt(LocalDateTime createtAt) {
         this.createtAt = createtAt;
     }
 
-    public LocalDate getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDate updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    @Override
-    public String toString() {
-        return "Benchmark{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country1='" + country1 + '\'' +
-                ", country2='" + country2 + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", createtAt=" + createtAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+    public Result getResult() {
+        return result;
     }
+
+    public void setResult(Result result) {
+        this.result = result;
+    }
+
 }
