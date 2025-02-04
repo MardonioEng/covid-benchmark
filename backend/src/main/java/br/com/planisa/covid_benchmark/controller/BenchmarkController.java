@@ -4,6 +4,7 @@ import br.com.planisa.covid_benchmark.dto.BenchmarkDTO;
 import br.com.planisa.covid_benchmark.service.BenchmarkService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,5 +26,12 @@ public class BenchmarkController {
         return ResponseEntity.ok(benchmarkDTOS);
     }
 
-
+    @GetMapping("/{id}")
+    public ResponseEntity<BenchmarkDTO> getBenchmarkById(@PathVariable Long id) {
+        BenchmarkDTO benchmarkDTO = benchmarkService.getBenchmarkById(id);
+        if (benchmarkDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(benchmarkDTO);
+    }
 }

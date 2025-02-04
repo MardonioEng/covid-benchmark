@@ -6,6 +6,7 @@ import br.com.planisa.covid_benchmark.repository.BenchmarkRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BenchmarkService {
@@ -22,6 +23,11 @@ public class BenchmarkService {
                 .stream()
                 .map(BenchmarkDTO::new)
                 .toList();
+    }
+
+    public BenchmarkDTO getBenchmarkById(Long id) {
+        Optional<Benchmark> benchmark = BenchmarkRepository.findById(id);
+        return benchmark.map(BenchmarkDTO::new).orElse(null);
     }
 
 }
