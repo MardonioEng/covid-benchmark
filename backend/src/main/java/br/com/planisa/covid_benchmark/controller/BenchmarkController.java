@@ -43,4 +43,14 @@ public class BenchmarkController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBenchmark(@PathVariable Long id) {
+        try {
+            benchmarkService.deleteBenchmark(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

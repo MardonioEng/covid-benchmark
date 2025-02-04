@@ -39,4 +39,11 @@ public class BenchmarkService {
         return new BenchmarkDTO(benchmark);
     }
 
+    public void deleteBenchmark(Long id) throws Exception {
+        Benchmark benchmark = benchmarkRepository.findById(id)
+                .orElseThrow(() -> new Exception("Benchmark não encontrado"));
+
+        benchmarkRepository.delete(benchmark);
+    }
+
 }

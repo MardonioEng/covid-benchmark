@@ -38,7 +38,7 @@ public class Benchmark {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToOne(mappedBy = "benchmark")
+    @OneToOne(mappedBy = "benchmark", cascade = CascadeType.ALL)
     private Result result;
 
     public Benchmark() {
