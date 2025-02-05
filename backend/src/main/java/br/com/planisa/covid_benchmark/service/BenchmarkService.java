@@ -12,9 +12,11 @@ import java.util.Optional;
 public class BenchmarkService {
 
     private final BenchmarkRepository benchmarkRepository;
+    private final ApiClientService apiClientService;
 
-    public BenchmarkService(BenchmarkRepository benchmarkRepository) {
+    public BenchmarkService(BenchmarkRepository benchmarkRepository, ApiClientService apiClientService) {
         this.benchmarkRepository = benchmarkRepository;
+        this.apiClientService = apiClientService;
     }
 
     public List<BenchmarkDTO> getBenchmarks() {

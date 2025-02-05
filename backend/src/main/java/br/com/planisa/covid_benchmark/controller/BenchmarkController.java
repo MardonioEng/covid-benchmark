@@ -19,6 +19,12 @@ public class BenchmarkController {
         this.benchmarkService = benchmarkService;
     }
 
+    @GetMapping("/client")
+    public ResponseEntity<Void> testClient() {
+        benchmarkService.testClient();
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public ResponseEntity<List<BenchmarkDTO>> getBenchmarks() {
         List<BenchmarkDTO> benchmarkDTOS = benchmarkService.getBenchmarks();
