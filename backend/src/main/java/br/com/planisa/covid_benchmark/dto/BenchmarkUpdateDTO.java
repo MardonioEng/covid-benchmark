@@ -1,7 +1,12 @@
 package br.com.planisa.covid_benchmark.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class BenchmarkUpdateDTO {
 
+    @NotBlank(message = "Field required")
+    @Size(min = 2, max = 150, message = "field outside the standard size")
     private String name;
 
     public BenchmarkUpdateDTO(String name) {

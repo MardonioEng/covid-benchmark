@@ -3,6 +3,7 @@ package br.com.planisa.covid_benchmark.controller;
 import br.com.planisa.covid_benchmark.dto.BenchmarkDTO;
 import br.com.planisa.covid_benchmark.dto.BenchmarkUpdateDTO;
 import br.com.planisa.covid_benchmark.service.BenchmarkService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class BenchmarkController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BenchmarkDTO> updateBenchmark(@PathVariable Long id, @RequestBody BenchmarkUpdateDTO benchmarkUpdateDTO) {
+    public ResponseEntity<BenchmarkDTO> updateBenchmark(@PathVariable Long id, @RequestBody @Valid BenchmarkUpdateDTO benchmarkUpdateDTO) {
         try {
             BenchmarkDTO updated = benchmarkService.updateBenchmark(id, benchmarkUpdateDTO.getName());
             return ResponseEntity.ok(updated);
