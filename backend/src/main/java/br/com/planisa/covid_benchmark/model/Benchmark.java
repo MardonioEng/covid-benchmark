@@ -13,7 +13,7 @@ public class Benchmark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "name", length = 150, nullable = false)
     private String name;
@@ -44,7 +44,7 @@ public class Benchmark {
     public Benchmark() {
     }
 
-    public Benchmark(Integer id, String name, String country1, String country2, LocalDate startDate, LocalDate endDate, LocalDateTime createtAt, LocalDateTime updatedAt, Result result) {
+    public Benchmark(Long id, String name, String country1, String country2, LocalDate startDate, LocalDate endDate, LocalDateTime createtAt, LocalDateTime updatedAt, Result result) {
         this.id = id;
         this.name = name;
         this.country1 = country1;
@@ -56,11 +56,11 @@ public class Benchmark {
         this.result = result;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public class BenchmarkDTO {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String country1;
     private String country2;
@@ -29,11 +29,11 @@ public class BenchmarkDTO {
         this.result = new ResultDTO(benchmark.getResult());
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

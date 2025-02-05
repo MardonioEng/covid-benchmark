@@ -2,6 +2,7 @@ package br.com.planisa.covid_benchmark.controller.common;
 
 import br.com.planisa.covid_benchmark.dto.FieldErrorDetailDTO;
 import br.com.planisa.covid_benchmark.dto.ResponseErrorDTO;
+import br.com.planisa.covid_benchmark.exceptions.ResourceAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,4 +34,21 @@ public class GlobalExceptionHandler {
     public ResponseErrorDTO handleOperationNotAllowedException(HttpMessageNotReadableException e) {
         return ResponseErrorDTO.defaultError(e.getMessage());
     }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseErrorDTO handleOperationNotAllowedException(MethodArgumentTypeMismatchException e) {
+        return ResponseErrorDTO.defaultError(e.getMessage());
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseErrorDTO handleDublicateRegisterExcelption(ResourceAlreadyExistsException e) {
+        return new ResponseErrorDTO(
+                HttpStatus.CONFLICT.value(),
+                e.getMessage(),
+                List.of()
+        );
+    }
+
 }

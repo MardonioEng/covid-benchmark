@@ -1,28 +1,24 @@
 package br.com.planisa.covid_benchmark.controller;
 
 import br.com.planisa.covid_benchmark.dto.BenchmarkDTO;
+import br.com.planisa.covid_benchmark.dto.BenchmarkSaveDTO;
 import br.com.planisa.covid_benchmark.dto.BenchmarkUpdateDTO;
 import br.com.planisa.covid_benchmark.service.BenchmarkService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/benchmarks")
-public class BenchmarkController {
+public class BenchmarkController implements GenericController{
 
     private final BenchmarkService benchmarkService;
 
     public BenchmarkController(BenchmarkService benchmarkService) {
         this.benchmarkService = benchmarkService;
-    }
-
-    @GetMapping("/client")
-    public ResponseEntity<Void> testClient() {
-        benchmarkService.testClient();
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
@@ -38,6 +34,13 @@ public class BenchmarkController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(benchmarkDTO);
+    }
+
+    @PostMapping
+    public ResponseEntity<BenchmarkDTO> saveBenchmark(@RequestBody @Valid BenchmarkSaveDTO benchmarkSaveDTO) {
+        BenchmarkDTO benchmarkDTO = benchmarkService.saveBenchmark(benchmarkSaveDTO);
+        URI location = this.generateHeaderLocation(benchmarkDTO.getId());
+        return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/{id}")
