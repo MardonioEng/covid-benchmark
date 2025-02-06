@@ -3,10 +3,13 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import { useRouter } from 'next/navigation';
+
 const ListBenchmarks = () => {
     const [benchmarks, setBenchmarks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const router = useRouter();
 
     useEffect(() => {
         loadBenchmarks();
@@ -49,7 +52,15 @@ const ListBenchmarks = () => {
 
     return (
         <div className="container mt-4">
-            <h2 className="mb-4">Lista de Benchmarks</h2>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <h2>Lista de Benchmarks</h2>
+                <button
+                    className="btn btn-primary"
+                    onClick={() => router.push('/register')}
+                >
+                    Novo Benchmark
+                </button>
+            </div>
             <table className="table table-striped table-hover">
                 <thead className="table-dark">
                     <tr>
@@ -68,13 +79,13 @@ const ListBenchmarks = () => {
                             <td>{benchmark.country1}</td>
                             <td>{benchmark.country2}</td>
                             <td>
-                                <button 
+                                <button
                                     className="btn btn-primary btn-sm me-2"
                                     onClick={() => console.log('Editar:', benchmark.id)}
                                 >
                                     Editar
                                 </button>
-                                <button 
+                                <button
                                     className="btn btn-danger btn-sm"
                                     onClick={() => console.log('Deletar:', benchmark.id)}
                                 >
