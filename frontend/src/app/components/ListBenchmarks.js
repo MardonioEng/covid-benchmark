@@ -10,10 +10,29 @@ const ListBenchmarks = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const router = useRouter();
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedBenchmark, setSelectedBenchmark] = useState(null);
+    const [deleteError, setDeleteError] = useState(null);
+    const [deleteLoading, setDeleteLoading] = useState(false);
 
     useEffect(() => {
         loadBenchmarks();
     }, []);
+
+    useEffect(() => {
+        if (showDeleteModal) {
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('modal-open');
+        } else {
+            document.body.style.overflow = 'unset';
+            document.body.classList.remove('modal-open');
+        }
+
+        return () => {
+            document.body.style.overflow = 'unset';
+            document.body.classList.remove('modal-open');
+        };
+    }, [showDeleteModal]);
 
     const loadBenchmarks = async () => {
         try {
@@ -25,6 +44,28 @@ const ListBenchmarks = () => {
             setError('Error fetching benchmarks: ' + err.message);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleDeleteClick = (benchmark) => {
+        setSelectedBenchmark(benchmark);
+        setShowDeleteModal(true);
+        setDeleteError(null);
+    };
+
+    const handleDeleteConfirm = async () => {
+        try {
+            setDeleteLoading(true);
+            setDeleteError(null);
+            
+            await axios.delete(`/api/benchmarks/${selectedBenchmark.id}`);
+            
+            setShowDeleteModal(false);
+            await loadBenchmarks();
+        } catch (err) {
+            setDeleteError(err.response?.data?.message || 'Erro ao deletar o benchmark');
+        } finally {
+            setDeleteLoading(false);
         }
     };
 
@@ -87,7 +128,7 @@ const ListBenchmarks = () => {
                                 </button>
                                 <button
                                     className="btn btn-danger btn-sm"
-                                    onClick={() => console.log('Deletar:', benchmark.id)}
+                                    onClick={() => handleDeleteClick(benchmark)}
                                 >
                                     Deletar
                                 </button>
@@ -96,6 +137,57 @@ const ListBenchmarks = () => {
                     ))}
                 </tbody>
             </table>
+
+            {showDeleteModal && (
+                <>
+                    <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex="-1">
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title">Confirmar Exclusão</h5>
+                                    <button 
+                                        type="button" 
+                                        className="btn-close" 
+                                        onClick={() => setShowDeleteModal(false)}
+                                        disabled={deleteLoading}
+                                    ></button>
+                                </div>
+                                <div className="modal-body">
+                                    <p>Tem certeza que deseja excluir o benchmark "{selectedBenchmark?.name}"?</p>
+                                    {deleteError && (
+                                        <div className="alert alert-danger">
+                                            {deleteError}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="modal-footer">
+                                    <button 
+                                        type="button" 
+                                        className="btn btn-secondary" 
+                                        onClick={() => setShowDeleteModal(false)}
+                                        disabled={deleteLoading}
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        className="btn btn-danger"
+                                        onClick={handleDeleteConfirm}
+                                        disabled={deleteLoading}
+                                    >
+                                        {deleteLoading ? (
+                                            <>
+                                                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                Excluindo...
+                                            </>
+                                        ) : 'Confirmar Exclusão'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 };
