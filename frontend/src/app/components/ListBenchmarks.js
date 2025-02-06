@@ -122,7 +122,7 @@ const ListBenchmarks = () => {
                             <td>
                                 <button
                                     className="btn btn-primary btn-sm me-2"
-                                    onClick={() => console.log('Editar:', benchmark.id)}
+                                    onClick={() => router.push(`/edit/${benchmark.id}`)}
                                 >
                                     Editar
                                 </button>

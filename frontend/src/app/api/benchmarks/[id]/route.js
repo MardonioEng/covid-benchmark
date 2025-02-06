@@ -1,5 +1,35 @@
 import { NextResponse } from 'next/server';
 
+export async function GET(request, { params }) {
+    try {
+        const resolvedParams = await params;
+        const id = resolvedParams.id;
+        
+        const response = await fetch(`http://localhost:8080/api/v1/benchmarks/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            return NextResponse.json(data);
+        }
+
+        const errorData = await response.json();
+        return NextResponse.json(
+            errorData,
+            { status: response.status }
+        );
+    } catch (error) {
+        console.error('Erro ao buscar benchmark:', error);
+        return NextResponse.json(
+            { error: 'Erro ao buscar benchmark: ' + error.message },
+            { status: 500 }
+        );
+    }
+}
+
 export async function DELETE(request, { params }) {
     try {
         const resolvedParams = await params;
@@ -34,4 +64,37 @@ export async function DELETE(request, { params }) {
             { status: 500 }
         );
     }
-  }
+}
+
+  export async function PUT(request, { params }) {
+    try {
+        const resolvedParams = await params;
+        const id = resolvedParams.id;
+        const body = await request.json();
+        
+        const response = await fetch(`http://localhost:8080/api/v1/benchmarks/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name: body.name }),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            return NextResponse.json(data);
+        }
+
+        const errorData = await response.json();
+        return NextResponse.json(
+            errorData,
+            { status: response.status }
+        );
+    } catch (error) {
+        console.error('Erro ao atualizar benchmark:', error);
+        return NextResponse.json(
+            { error: 'Erro ao atualizar benchmark: ' + error.message },
+            { status: 500 }
+        );
+    }
+}
