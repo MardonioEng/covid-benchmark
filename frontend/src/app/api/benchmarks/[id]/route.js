@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
+import { API_URL } from '../../../../config/api';
 
 export async function GET(request, { params }) {
     try {
         const resolvedParams = await params;
         const id = resolvedParams.id;
         
-        const response = await fetch(`http://localhost:8080/api/v1/benchmarks/${id}`, {
+        const response = await fetch(`${API_URL}/benchmarks/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -35,7 +36,7 @@ export async function DELETE(request, { params }) {
         const resolvedParams = await params;
         const id = resolvedParams.id;
         
-        const response = await fetch(`http://localhost:8080/api/v1/benchmarks/${id}`, {
+        const response = await fetch(`${API_URL}/benchmarks/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -72,7 +73,7 @@ export async function DELETE(request, { params }) {
         const id = resolvedParams.id;
         const body = await request.json();
         
-        const response = await fetch(`http://localhost:8080/api/v1/benchmarks/${id}`, {
+        const response = await fetch(`${API_URL}/benchmarks/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

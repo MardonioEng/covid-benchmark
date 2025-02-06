@@ -10,6 +10,8 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - covid-network
 
@@ -31,6 +33,25 @@ services:
     networks:
       - covid-network
 
+  frontend:
+    container_name: covid-benchmark-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://api:8080/api/v1
+    depends_on:
+      - api
+    networks:
+      - covid-network
+
 networks:
   covid-network:
     driver: bridge
+
+volumes:
+  postgres_data:
+    name: covid-benchmark-db-data

@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
+import { API_URL } from '../../../config/api';
 
 export async function GET() {
   try {
-    const response = await fetch('http://localhost:8080/api/v1/benchmarks', {
+    const response = await fetch(`${API_URL}/benchmarks`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -22,7 +23,7 @@ export async function POST(request) {
     try {
         const body = await request.json();
         
-        const response = await fetch('http://localhost:8080/api/v1/benchmarks', {
+        const response = await fetch(`${API_URL}/benchmarks`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
