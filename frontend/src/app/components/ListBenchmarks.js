@@ -116,7 +116,14 @@ const ListBenchmarks = () => {
                     {benchmarks.map((benchmark) => (
                         <tr key={benchmark.id}>
                             <td>{benchmark.id}</td>
-                            <td>{benchmark.name}</td>
+                            <td>
+                                <a 
+                                    href={`/view/${benchmark.id}`}
+                                    className="text-decoration-none"
+                                >
+                                    {benchmark.name}
+                                </a>
+                            </td>
                             <td>{benchmark.country1}</td>
                             <td>{benchmark.country2}</td>
                             <td>
