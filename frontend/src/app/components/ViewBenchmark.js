@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { ArrowLeft } from 'lucide-react';
 
 const ViewBenchmark = ({ id }) => {
     const router = useRouter();
@@ -65,82 +66,102 @@ const ViewBenchmark = ({ id }) => {
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2>Detalhes do Benchmark</h2>
                 <button 
-                    className="btn btn-secondary"
+                    className="btn btn-link text-decoration-none"
                     onClick={() => router.push('/')}
                 >
+                    <ArrowLeft className="me-2" size={20} />
                     Voltar
                 </button>
             </div>
 
-            <div className="card">
-                <div className="card-body">
-                    <h3 className="card-title mb-4">{benchmark.name}</h3>
-                    
-                    <div className="row mb-4">
-                        <div className="col-md-6">
-                            <h4>Informações Gerais</h4>
-                            <table className="table">
-                                <tbody>
-                                    <tr>
-                                        <th>ID:</th>
-                                        <td>{benchmark.id}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>País 1:</th>
-                                        <td>{benchmark.country1}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>País 2:</th>
-                                        <td>{benchmark.country2}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Data Início:</th>
-                                        <td>{formatDate(benchmark.startDate)}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Data Fim:</th>
-                                        <td>{formatDate(benchmark.endDate)}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Criado em:</th>
-                                        <td>{formatDate(benchmark.createtAt)}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Atualizado em:</th>
-                                        <td>{formatDate(benchmark.updatedAt)}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+            <div className="row">
+                <div className="col-md-8">
+                    <div className="card mb-4">
+                        <div className="card-body">
+                            <h3 className="card-title mb-4">{benchmark.name}</h3>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="mb-3">
+                                        <small className="text-muted">ID</small>
+                                        <p className="mb-0">{benchmark.id}</p>
+                                    </div>
+                                    <div className="mb-3">
+                                        <small className="text-muted">País 1</small>
+                                        <p className="mb-0">{benchmark.country1}</p>
+                                    </div>
+                                    <div className="mb-3">
+                                        <small className="text-muted">País 2</small>
+                                        <p className="mb-0">{benchmark.country2}</p>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="mb-3">
+                                        <small className="text-muted">Data Início</small>
+                                        <p className="mb-0">{new Date(benchmark.startDate).toLocaleDateString('pt-BR')}</p>
+                                    </div>
+                                    <div className="mb-3">
+                                        <small className="text-muted">Data Fim</small>
+                                        <p className="mb-0">{new Date(benchmark.endDate).toLocaleDateString('pt-BR')}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div className="col-md-6">
-                            <h4>Resultados</h4>
-                            {benchmark.result ? (
-                                <table className="table">
-                                    <tbody>
-                                        <tr>
-                                            <th>Casos {benchmark.country1}:</th>
-                                            <td>{benchmark.result.casesCountry1}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Casos {benchmark.country2}:</th>
-                                            <td>{benchmark.result.casesCountry2}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Mortes {benchmark.country1}:</th>
-                                            <td>{benchmark.result.deathsCountry1}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Mortes {benchmark.country2}:</th>
-                                            <td>{benchmark.result.deathsCountry2}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            ) : (
-                                <p>Nenhum resultado disponível</p>
-                            )}
+                    </div>
+
+                    {benchmark.result && (
+                        <div className="card">
+                            <div className="card-body">
+                                <h4 className="card-title mb-4">Resultados</h4>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="card bg-light mb-3">
+                                            <div className="card-body">
+                                                <h5 className="card-title">{benchmark.country1}</h5>
+                                                <div className="mb-2">
+                                                    <small className="text-muted">Casos</small>
+                                                    <p className="h4 mb-0">{benchmark.result.casesCountry1.toLocaleString()}</p>
+                                                </div>
+                                                <div>
+                                                    <small className="text-muted">Mortes</small>
+                                                    <p className="h4 mb-0">{benchmark.result.deathsCountry1.toLocaleString()}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="card bg-light">
+                                            <div className="card-body">
+                                                <h5 className="card-title">{benchmark.country2}</h5>
+                                                <div className="mb-2">
+                                                    <small className="text-muted">Casos</small>
+                                                    <p className="h4 mb-0">{benchmark.result.casesCountry2.toLocaleString()}</p>
+                                                </div>
+                                                <div>
+                                                    <small className="text-muted">Mortes</small>
+                                                    <p className="h4 mb-0">{benchmark.result.deathsCountry2.toLocaleString()}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                <div className="col-md-4">
+                    <div className="card">
+                        <div className="card-body">
+                            <h4 className="card-title mb-4">Informações Adicionais</h4>
+                            <div className="mb-3">
+                                <small className="text-muted">Criado em</small>
+                                <p className="mb-0">{new Date(benchmark.createtAt).toLocaleDateString('pt-BR')}</p>
+                            </div>
+                            <div className="mb-3">
+                                <small className="text-muted">Atualizado em</small>
+                                <p className="mb-0">{new Date(benchmark.updatedAt).toLocaleDateString('pt-BR')}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
