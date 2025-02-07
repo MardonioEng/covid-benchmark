@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { useRouter } from 'next/navigation';
+import { Pencil, Trash2 } from 'lucide-react';
 
 const ListBenchmarks = () => {
     const [benchmarks, setBenchmarks] = useState([]);
@@ -105,17 +106,17 @@ const ListBenchmarks = () => {
             <table className="table table-striped table-hover">
                 <thead className="table-dark">
                     <tr>
-                        <th>ID</th>
                         <th>Nome</th>
                         <th>Pais 1</th>
                         <th>Pais 2</th>
-                        <th>Ações</th>
+                        <th>Data Início</th>
+                        <th>Data Fim</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {benchmarks.map((benchmark) => (
                         <tr key={benchmark.id}>
-                            <td>{benchmark.id}</td>
                             <td>
                                 <a 
                                     href={`/view/${benchmark.id}`}
@@ -126,18 +127,22 @@ const ListBenchmarks = () => {
                             </td>
                             <td>{benchmark.country1}</td>
                             <td>{benchmark.country2}</td>
+                            <td>{new Date(benchmark.startDate).toLocaleDateString('pt-BR')}</td>
+                            <td>{new Date(benchmark.endDate).toLocaleDateString('pt-BR')}</td>
                             <td>
                                 <button
-                                    className="btn btn-primary btn-sm me-2"
+                                    className="btn btn-link btn-sm me-2 p-0"
                                     onClick={() => router.push(`/edit/${benchmark.id}`)}
+                                    title="Editar"
                                 >
-                                    Editar
+                                    <Pencil size={18} className="text-primary" />
                                 </button>
                                 <button
-                                    className="btn btn-danger btn-sm"
+                                    className="btn btn-link btn-sm p-0"
                                     onClick={() => handleDeleteClick(benchmark)}
+                                    title="Deletar"
                                 >
-                                    Deletar
+                                    <Trash2 size={18} className="text-danger" />
                                 </button>
                             </td>
                         </tr>

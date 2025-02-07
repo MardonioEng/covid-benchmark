@@ -16,6 +16,7 @@ const BenchmarkForm = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -27,6 +28,15 @@ const BenchmarkForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const validationErrors = validateDates(formData);
+        
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        setErrors({});
         setLoading(true);
         setError(null);
         setSuccess(false);
@@ -57,6 +67,28 @@ const BenchmarkForm = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const validateDates = (data) => {
+        const errors = {};
+        const minDate = new Date('2020-01-22');
+        const maxDate = new Date('2023-03-09');
+        const startDate = new Date(data.startDate);
+        const endDate = new Date(data.endDate);
+ 
+        if (startDate < minDate) {
+            errors.startDate = 'A data inicial não pode ser anterior a 22/01/2020';
+        }
+ 
+        if (endDate > maxDate) {
+            errors.endDate = 'A data final não pode ser posterior a 09/03/2023';
+        }
+ 
+        if (startDate > endDate) {
+            errors.dateRange = 'A data inicial não pode ser maior que a data final';
+        }
+ 
+        return errors;
     };
 
     return (
@@ -116,29 +148,42 @@ const BenchmarkForm = () => {
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="startDate" className="form-label">Data Inicial</label>
+                    <label htmlFor="startDate" className="form-label">Data Início</label>
                     <input
                         type="date"
-                        className="form-control"
+                        className={`form-control ${errors.startDate || errors.dateRange ? 'is-invalid' : ''}`}
                         id="startDate"
                         name="startDate"
                         value={formData.startDate}
                         onChange={handleChange}
+                        min="2020-01-22"
+                        max="2023-03-09"
                         required
                     />
+                    {errors.startDate && (
+                        <div className="invalid-feedback">{errors.startDate}</div>
+                    )}
+                    {errors.dateRange && (
+                        <div className="invalid-feedback">{errors.dateRange}</div>
+                    )}
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="endDate" className="form-label">Data Final</label>
+                    <label htmlFor="endDate" className="form-label">Data Fim</label>
                     <input
                         type="date"
-                        className="form-control"
+                        className={`form-control ${errors.endDate || errors.dateRange ? 'is-invalid' : ''}`}
                         id="endDate"
                         name="endDate"
                         value={formData.endDate}
                         onChange={handleChange}
+                        min="2020-01-22"
+                        max="2023-03-09"
                         required
                     />
+                    {errors.endDate && (
+                        <div className="invalid-feedback">{errors.endDate}</div>
+                    )}
                 </div>
 
                 <div className="mb-3">
