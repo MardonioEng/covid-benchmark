@@ -1,9 +1,9 @@
 package br.com.planisa.covid_benchmark;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-@SpringBootTest
+@DataJpaTest
 class Covid19BenchmarkApplicationTests {
 
 	@Test
