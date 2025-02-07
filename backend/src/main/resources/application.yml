@@ -17,3 +17,9 @@ api:
   client:
     base-url: ${BASE_URL}
     api-key: ${API_KEY}
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /docs.html
